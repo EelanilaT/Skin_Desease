@@ -16,24 +16,34 @@ app.config['UPLOADS_DEFAULT_DEST'] = uploads_dir
 app.config['UPLOADED_IMAGES_DEST'] = uploads_dir
 app.config['UPLOADED_IMAGES_ALLOW'] = set(['jpg', 'jpeg', 'png', 'gif'])
 
-# Load pre-trained model
-model = load_model('D:\SLIIT\RP\skin_cancer_inception_keras\skin_cancer_inception_keras')  
+# Load models
+skin_cancer_model = load_model('D:\SLIIT\RP\skin_cancer_inception_keras\skin_cancer_inception_keras')  # Replace with your actual skin cancer model
+other_model = load_model('D:\SLIIT\RP\Model\skin_cancer_inception_keras')  # Replace with your other model
 
-# Function to process the uploaded image
-def process_image(image_path):
-    img = Image.open(image_path)
-    img = img.resize((224, 224))  # Adjust the size based on your model requirements
-    img_array = np.array(img) / 255.0
-    img_array = np.expand_dims(img_array, axis=0)
-    result = model.predict(img_array)
-    return result
+# Function to process the uploaded image for skin cancer model
+def process_skin_cancer_image(image_path):
+    # Add processing logic specific to the skin cancer model
+    pass
+
+# Function to process the uploaded image for the other model
+def process_other_model_image(image_path):
+    # Add processing logic specific to the other model
+    pass
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/upload', methods=['POST'])
-def upload():
+@app.route('/skin_cancer')
+def skin_cancer():
+    return render_template('skin_cancer.html')
+
+@app.route('/other_model')
+def other_model():
+    return render_template('other_model.html')
+
+@app.route('/upload_skin_cancer', methods=['POST'])
+def upload_skin_cancer():
     if 'image' not in request.files:
         return jsonify({'error': 'No image file provided'})
 
@@ -43,15 +53,33 @@ def upload():
         return jsonify({'error': 'No image file selected'})
 
     if file:
-        # Ensure the 'uploads' directory exists
-        os.makedirs(uploads_dir, exist_ok=True)
-
         filename = secure_filename(file.filename)
-        file.save(os.path.join(uploads_dir, filename))
-        result = process_image(os.path.join(uploads_dir, filename))
+        file.save('uploads/' + filename)
+        result = process_skin_cancer_image('uploads/' + filename)
 
         # Map model prediction to class names
-        class_names = ['Basal_Cell_Carcinoma', 'Melanoma', 'Normal_skin']
+        class_names = ['Class1', 'Class2', 'Class3']
+        predicted_class = class_names[np.argmax(result)]
+
+        return jsonify({'result': predicted_class})
+
+@app.route('/upload_other_model', methods=['POST'])
+def upload_other_model():
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image file provided'})
+
+    file = request.files['image']
+
+    if file.filename == '':
+        return jsonify({'error': 'No image file selected'})
+
+    if file:
+        filename = secure_filename(file.filename)
+        file.save('uploads/' + filename)
+        result = process_other_model_image('uploads/' + filename)
+
+        # Map model prediction to class names
+        class_names = ['Class1', 'Class2', 'Class3']
         predicted_class = class_names[np.argmax(result)]
 
         return jsonify({'result': predicted_class})
