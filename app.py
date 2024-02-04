@@ -42,7 +42,7 @@ def skin_cancer():
 def other_model():
     return render_template('other_model.html')
 
-@app.route('/upload_skin_cancer', methods=['POST'])
+@app.route('/upload', methods=['POST'])
 def upload_skin_cancer():
     if 'image' not in request.files:
         return jsonify({'error': 'No image file provided'})
@@ -63,7 +63,7 @@ def upload_skin_cancer():
 
         return jsonify({'result': predicted_class})
 
-@app.route('/upload_other_model', methods=['POST'])
+@app.route('/upload', methods=['POST'])
 def upload_other_model():
     if 'image' not in request.files:
         return jsonify({'error': 'No image file provided'})
