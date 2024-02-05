@@ -17,7 +17,7 @@ app.config['UPLOADED_IMAGES_DEST'] = uploads_dir
 app.config['UPLOADED_IMAGES_ALLOW'] = set(['jpg', 'jpeg', 'png', 'gif'])
 
 # Load pre-trained model
-model = load_model('D:\SLIIT\RP\skin_cancer_inception_keras\skin_cancer_inception_keras')  
+model = load_model('D:\RP\model\Ayingaran\ResNet50')  
 
 # Function to process the uploaded image
 def process_image(image_path):
@@ -51,7 +51,7 @@ def upload():
         result = process_image(os.path.join(uploads_dir, filename))
 
         # Map model prediction to class names
-        class_names = ['Basal_Cell_Carcinoma', 'Melanoma', 'Normal_skin']
+        class_names = ['Melanocytic_nevus', 'Benign_keratosis', 'Normal_skin']
         predicted_class = class_names[np.argmax(result)]
 
         return jsonify({'result': predicted_class})
