@@ -17,8 +17,9 @@ app.config['UPLOADED_IMAGES_DEST'] = uploads_dir
 app.config['UPLOADED_IMAGES_ALLOW'] = set(['jpg', 'jpeg', 'png', 'gif'])
 
 # Load models
-skin_cancer_model = load_model('D:\SLIIT\RP\skin_cancer_inception_keras\skin_cancer_inception_keras')  
-Benign_Tumors_model = load_model('D:\SLIIT\RP\ResNet50\ResNet50')  
+skin_cancer_model = load_model('D:\SLIIT\RP\skin_cancer_inception_keras\skin_cancer_inception_keras')
+Benign_Tumors_model = load_model('D:\SLIIT\RP\ResNet50\ResNet50')
+skin_rashes_Model = load_model('D:\SLIIT\RP\skin_condition_model\skin_condition_model')  
 
 # Function to process the uploaded image for skin cancer model
 def process_skin_cancer_image(image_path):
@@ -26,7 +27,7 @@ def process_skin_cancer_image(image_path):
     img = img.resize((224, 224))
     img_array = np.array(img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
-    result = skin_cancer_model.predict(img_array) 
+    result = skin_cancer_model.predict(img_array)
     return result
 
 # Function to process the uploaded image for the Benign_Tumors model
@@ -35,7 +36,16 @@ def process_Benign_Tumors_model_image(image_path):
     img = img.resize((224, 224))
     img_array = np.array(img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
-    result = Benign_Tumors_model.predict(img_array)  
+    result = Benign_Tumors_model.predict(img_array)
+    return result
+
+# Function to process the uploaded image for the Third_Model
+def process_skin_rashes_Model_image(image_path):
+    img = Image.open(image_path)
+    img = img.resize((224, 224))
+    img_array = np.array(img) / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
+    result = skin_rashes_Model.predict(img_array)
     return result
 
 @app.route('/')
@@ -50,7 +60,11 @@ def skin_cancer():
 def Benign_Tumors():
     return render_template('other_model.html')
 
-@app.route('/upload', methods=['POST'])
+@app.route('/third_model')
+def third_model():
+    return render_template('third_model.html')
+
+@app.route('/upload_skin_cancer', methods=['POST'])
 def upload_skin_cancer():
     if 'image' not in request.files:
         return jsonify({'error': 'No image file provided'})
@@ -71,8 +85,8 @@ def upload_skin_cancer():
 
         return jsonify({'result': predicted_class})
 
-@app.route('/upload', methods=['POST'])
-def upload_Benign_Tumors():
+@app.route('/upload_benign_tumors', methods=['POST'])
+def upload_benign_tumors():
     if 'image' not in request.files:
         return jsonify({'error': 'No image file provided'})
 
@@ -88,6 +102,27 @@ def upload_Benign_Tumors():
 
         # Map model prediction to class names
         class_names = ['Melanocytic_Nevi', 'Benign_Keratosis_like_Lesions', 'NormalSkin']
+        predicted_class = class_names[np.argmax(result)]
+
+        return jsonify({'result': predicted_class})
+
+@app.route('/upload_skin_rashes_Model', methods=['POST'])
+def upload_third_model():
+    if 'image' not in request.files:
+        return jsonify({'error': 'No image file provided'})
+
+    file = request.files['image']
+
+    if file.filename == '':
+        return jsonify({'error': 'No image file selected'})
+
+    if file:
+        filename = secure_filename(file.filename)
+        file.save('uploads/' + filename)
+        result = process_skin_rashes_Model_image('uploads/' + filename)
+
+        # Map model prediction to class names
+        class_names = ['WartsMolluscum', 'UrticariaHives','NormalSkin']
         predicted_class = class_names[np.argmax(result)]
 
         return jsonify({'result': predicted_class})
