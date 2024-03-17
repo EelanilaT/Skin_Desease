@@ -24,7 +24,7 @@ app.config['UPLOADED_IMAGES_ALLOW'] = set(['jpg', 'jpeg', 'png', 'gif'])
 skin_cancer_model = load_model('D:\\RP\\Nila\\skin_cancer_inception')
 Benign_Tumors_model = load_model('D:\\RP\\model\\Ayingaran\\ResNet50')
 skin_rashes_Model = load_model('D:\\RP\\Sharujan')
-Inflam_Skin_Model= load_model('D:\\RP\\Sharujan')
+Inflam_Skin_Model= load_model('D:\RP\Dalax')
 # Function to process the uploaded image for skin cancer model
 def process_skin_cancer_image(image_path):
     img = Image.open(image_path)

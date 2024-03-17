@@ -6,37 +6,51 @@
     <title>Disease Prediction</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
+            background-image: url('/static/home.jpg'); 
+            background-size: 100% 100%;
+            background-repeat: no-repeat; 
+            background-position: center; 
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            overflow: hidden;
-            background-color: #f1f1f1;
         }
-        li {
-            float: left;
+
+        .buttons-container {
+            margin-right: 250px;
         }
-        li a {
-            display: block;
-            color: #000;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
+
+        button {
+            margin-bottom: 8px;
+            padding: 10px 12px;
+            background-color: #02394A;
+            color: white;
+    border: none;
+    border-radius: 18px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 292px;
+    height: 50px;
+    text-align: center;
         }
-        li a:hover {
-            background-color: #ddd;
+
+        button:hover {
+            background-color: #45a075;
         }
     </style>
 </head>
 <body>
-    <h1>Skin Disease Prediction</h1>
-    <ul>
-        <li><a href="/skin_cancer">Skin Cancer Model</a></li>
-        <li><a href="/other_model">Benign Tumors Model</a></li>
-        <li><a href="/third_model">Skin Rashes Model</a></li>
-        <li><a href="/inflam_model">Inflammatory Model</a></li>
-    </ul>
+    <div class="buttons-container">
+        
+        
+        <button><a href="/skin_cancer" style="text-decoration: none; color: white;">Neoplastic Conditions</a></button> <br><br>
+        <button><a href="/other_model" style="text-decoration: none; color: white;">Benign Tumors</a></button> <br><br>
+        <button><a href="/third_model" style="text-decoration: none; color: white;">Skin Rashes</a></button> <br><br>
+        <button><a href="/inflam_model" style="text-decoration: none; color: white;">Inflammatory Conditions</a></button>
+    </div>
 </body>
 </html>
