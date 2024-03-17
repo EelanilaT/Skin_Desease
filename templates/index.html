@@ -3,13 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Classifier</title>
+    <title>Disease Prediction</title>
+    <style>
+        body {
+            background-image: url('/static/home.jpg'); 
+            background-size: 100% 100%;
+            background-repeat: no-repeat; 
+            background-position: center; 
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .buttons-container {
+            margin-right: 250px;
+        }
+
+        button {
+            margin-bottom: 8px;
+            padding: 10px 12px;
+            background-color: #02394A;
+            color: white;
+    border: none;
+    border-radius: 18px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 292px;
+    height: 50px;
+    text-align: center;
+        }
+
+        button:hover {
+            background-color: #45a075;
+        }
+    </style>
 </head>
 <body>
-    <h1>Image Classifier</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required>
-        <button type="submit">Upload Image</button>
-    </form>
+    <div class="buttons-container">
+        
+        
+        <button><a href="/skin_cancer" style="text-decoration: none; color: white;">Neoplastic Conditions</a></button> <br><br>
+        <button><a href="/other_model" style="text-decoration: none; color: white;">Benign Tumors</a></button> <br><br>
+        <button><a href="/third_model" style="text-decoration: none; color: white;">Skin Rashes</a></button> <br><br>
+        <button><a href="/inflam_model" style="text-decoration: none; color: white;">Inflammatory Conditions</a></button>
+    </div>
 </body>
 </html>
