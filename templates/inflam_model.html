@@ -4,12 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inflammatory Conditions</title>
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="file"] {
+            display: block;
+            margin: 0 auto 20px;
+        }
+        button[type="submit"] {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        #predictionResult {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <h2>Inflammatory Conditions</h2>
-    <form action="/upload_inflam_model" method="post" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required>
+    <form action="/upload_inflam_model" method="post" enctype="multipart/form-data" id="uploadForm">
+        <input type="file" name="image" accept="image/*" required id="imageInput">
         <button type="submit">Upload Image</button>
     </form>
+    <div id="predictionResult"></div>
+
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            var formData = new FormData();
+            var fileField = document.getElementById("imageInput");
+            formData.append("image", fileField.files[0]);
+
+            fetch("/upload_inflam_model", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                var predictionResultDiv = document.getElementById("predictionResult");
+                if (data.error) {
+                    predictionResultDiv.innerHTML = "<p>Error: " + data.error + "</p>";
+                } else {
+                    predictionResultDiv.innerHTML = "<p>Prediction: " + data.result + "</p>";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    </script>
 </body>
 </html>
