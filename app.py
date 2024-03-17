@@ -17,7 +17,7 @@ app.config['UPLOADED_IMAGES_DEST'] = uploads_dir
 app.config['UPLOADED_IMAGES_ALLOW'] = set(['jpg', 'jpeg', 'png', 'gif'])
 
 # Load pre-trained model
-model = load_model('D:\SLIIT\RP\skin_cancer_inception_keras\skin_cancer_inception_keras')  
+model = load_model('C:\Users\dalaxshan\Desktop\Jupyter folder\model_pretrain_new\saved_model\model_checkpoint')
 
 # Function to process the uploaded image
 def process_image(image_path):
